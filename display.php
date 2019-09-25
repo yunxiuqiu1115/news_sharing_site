@@ -9,6 +9,7 @@
 <body>
     <?php
         session_start();
+        require 'database.php';
         $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(32));
         $yourid = $_SESSION['userid'];
         $sid = $_GET["storyid"];
@@ -27,10 +28,7 @@
 
                         </tr>
                         <?php
-                        $conn = mysqli_connect("localhost","root","1047deqingsu","story");
-                        if ($conn->connect_error){
-                        die("Connection failed:".$conn->connect_error);
-                        }
+                                require 'database.php';
                         $sql = "SELECT id,title,id_of_creater from story where id='$sid'";
                         $result = $conn -> query($sql);
                 
@@ -64,10 +62,7 @@
                         </tr>
 
                         <?php
-                        $conn = mysqli_connect("localhost","root","1047deqingsu","story");
-                        if ($conn->connect_error){
-                        die("Connection failed:".$conn->connect_error);
-                        }
+                        require 'database.php';
                         $sql = "SELECT content from story where id='$sid'";
                         $result = $conn -> query($sql);
                 
@@ -104,40 +99,39 @@
                         </tr>
 
                         <?php
-                        $conn = mysqli_connect("localhost","root","1047deqingsu","story");
-                        if ($conn->connect_error){
-                        die("Connection failed:".$conn->connect_error);
-                        }
+                        require 'database.php';
 
-                        $sql = "SELECT distinct user.username,user.userid,id_of_story,comment,id_of_comment,date_posted from user,story,comment 
-                        where comment.id_of_story='$sid' and user.userid = comment.userid";
+                        $sql = "SELECT distinct users.username,users.id,id_of_story,comment,id_of_comment,date_posted from users,story,comment 
+                        where comment.id_of_story='$sid' and users.id = comment.userid";
 
                         $result = $conn -> query($sql);
                 
                         
-                
-                        if($result->num_rows>0){
-                            while($row = $result -> fetch_assoc()){
-                                
-                                echo "<tr>";
-
-                                echo"<td>".$row["id_of_comment"]."</td>";
-                                
-                                echo"<td>".$row["username"]."</td>";
-                                
-                                echo"<td>".$row["comment"]."</td>";
-
-                                echo"<td>".$row["date_posted"]."</td>";
-
-                                if($row["userid"]==2){
-                                    echo"<td><a href='deletecomment.php?commentid=".$row["id_of_comment"]."'>Delete</a></td>";
-                                    echo"<td><a href='editcomment.php?commentid=".$row["id_of_comment"]."'>Edit</a></td>";
+                        if(true) {
+                            if($result->num_rows>0){
+                                while($row = $result -> fetch_assoc()){
+                                    
+                                    echo "<tr>";
+    
+                                    echo"<td>".$row["id_of_comment"]."</td>";
+                                    
+                                    echo"<td>".$row["username"]."</td>";
+                                    
+                                    echo"<td>".$row["comment"]."</td>";
+    
+                                    echo"<td>".$row["date_posted"]."</td>";
+    
+                                    if($row["id"]==$yourid){
+                                        echo"<td><a href='deletecomment.php?commentid=".$row["id_of_comment"]."'>Delete</a></td>";
+                                        echo"<td><a href='editcomment.php?commentid=".$row["id_of_comment"]."'>Edit</a></td>";
+                                    }
+                                    
+                                    echo"</tr>";
                                 }
                                 
-                                echo"</tr>";
                             }
-                            
                         }
+                        
                         
                         $conn -> close();
                         
@@ -147,8 +141,7 @@
 
     <form action='insertcomment.php' method='post'>
     content:<br>
-    <textarea name="comment" cols="50" rows="10">  
-    </textarea> 
+    <textarea name="comment" cols="50" rows="10" placeholder = "Please write your comment here!"></textarea> 
     <br>
     <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>" />
     <input type = "hidden" name="stid", value='<?php echo "$sid";?>'/>
@@ -162,6 +155,8 @@
         
         <button type="submit" name="back">BACK</button>
 </form>
+
+
 
     
 

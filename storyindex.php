@@ -20,13 +20,10 @@
 <form action='display.php' method='get'>
 <?php
     session_start();
+    require 'database.php';
     $yourid = $_SESSION['userid'];
     $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(32));
 
-$conn = mysqli_connect("localhost","root","1047deqingsu","story");
-if ($conn->connect_error){
-    die("Connection failed:".$conn->connect_error);
-}
 $sql = "SELECT id,id_of_creater,title,link from story";
 $result = $conn -> query($sql);
 
@@ -38,7 +35,7 @@ if($result->num_rows>0){
         
         
         echo "<tr><td>".$storyid."</td><td><a href='display.php?storyid=".$storyid."'>".$row["title"]."</a></td><td><a href='$external_link'>link</a></td>";
-        if($row["id_of_creater"]==2){
+        if($row["id_of_creater"]==$yourid){
         
             echo"<td><a href='deletestory.php?storyid=".$row["id"]."'>Delete</a></td>";
             echo"<td><a href='editstory.php?storyid=".$row["id"]."'>Edit</a></td>";
@@ -57,11 +54,14 @@ $conn -> close();
     title:<input type="text" name="newtitle"><br><br>
     link:<input type="text" name="newlink"><br><br>
     content:<br>
-    <textarea name="newcontent" cols="50" rows="10">  
-    </textarea> 
+    <textarea name="newcontent" cols="50" rows="10" placeholder="Please write your story!"></textarea> 
     <br>
     <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>" />
     <input type="submit" value="post">
+</form>
+<form action="index.php" method="POST">
+        
+        <button type="submit" name="back">Logout</button>
 </form>
 
 </body>

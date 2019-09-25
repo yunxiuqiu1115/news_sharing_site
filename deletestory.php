@@ -1,11 +1,10 @@
 <?php
 session_start();
+require 'database.php';
 $yourid = $_SESSION["userid"];
 
 $storyid = $_GET["storyid"];
-$conn = mysqli_connect("localhost","root","1047deqingsu","story");
-if ($conn->connect_error){
-        die("Connection failed:".$conn->connect_error);}
+
 
 $sql = "DELETE FROM story where id='$storyid'";
 

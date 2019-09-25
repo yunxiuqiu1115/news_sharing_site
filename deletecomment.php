@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'database.php';
 
 $yourid = $_SESSION["userid"];
 
@@ -8,9 +9,6 @@ $commentid = $_GET["commentid"];
 
 
 
-$conn = mysqli_connect("localhost","root","1047deqingsu","story");
-if ($conn->connect_error){
-        die("Connection failed:".$conn->connect_error);}
 
 $sql = "DELETE FROM comment where id_of_comment='$commentid'";
 

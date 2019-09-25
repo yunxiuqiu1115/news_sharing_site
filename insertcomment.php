@@ -1,6 +1,7 @@
 <?php
     
     session_start();
+    require 'database.php';
     if(!hash_equals($_SESSION['token'], $_POST['token'])){
         die("Request forgery detected");
     }
@@ -12,12 +13,8 @@
     
     $date = date_create()->format('Y-m-d H:i:s');
 
-    $conn = mysqli_connect("localhost","root","1047deqingsu","story");
-    if ($conn->connect_error){
-    die("Connection failed:".$conn->connect_error);
-    }
 
-    $sql = "INSERT INTO comment(userid,id_of_story,comment,date_posted) VALUES('2','$sid2','$newcomment','$date')";
+    $sql = "INSERT INTO comment(userid,id_of_story,comment,date_posted) VALUES('$id','$sid2','$newcomment','$date')";
 
 
     $result = $conn -> query($sql);

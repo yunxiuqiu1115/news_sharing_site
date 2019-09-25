@@ -3,12 +3,11 @@
 
 <?php
 session_start();
+require 'database.php';
 $yourid = $_SESSION["userid"];
 $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(32));
 $storyid = $_GET["storyid"];
-$conn = mysqli_connect("localhost","root","1047deqingsu","story");
-if ($conn->connect_error){
-        die("Connection failed:".$conn->connect_error);}
+
 
 $sql = "SELECT * FROM story where id='$storyid'";
 
@@ -30,9 +29,7 @@ while($row = mysqli_fetch_assoc($result)) {
 <label>Link: </label><input type="text" name="link" value='<?php echo "$link";?>'><br><br>
 <label>Content: </label><br>
 
-<textarea name="content" cols="50" rows="10">
-<?php echo "$content";?>  
-</textarea> 
+<textarea name="content" cols="50" rows="10"><?php echo "$content";?></textarea> 
 
 <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>" />
 <input type="hidden" name="storyid" value='<?php echo "$storyid";?>'>

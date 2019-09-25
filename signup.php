@@ -12,9 +12,9 @@
         //the variable userexists_isnew is true if the username has not been used before
         $signup_username = htmlentities($_POST['signup_username']);
         $username_isnew = true;
-        $stmt = $mysqli->prepare("select username from users");
+        $stmt = $conn->prepare("select username from users");
         if(!$stmt){
-            printf("Query Prep Failed: %s\n", $mysqli->error);
+            printf("Query Prep Failed: %s\n", $conn->error);
             exit;
         }
 
@@ -56,9 +56,9 @@
         $error = "The passwords didn't match";
     } else {
 
-        $stmt = $mysqli->prepare("insert into users (username, password) values (?, ?)");
+        $stmt = $conn->prepare("insert into users (username, password) values (?, ?)");
         if(!$stmt){
-            printf("Query Prep Failed: %s\n", $mysqli->error);
+            printf("Query Prep Failed: %s\n", $conn->error);
             exit;
         }
 
@@ -70,14 +70,14 @@
 
         $stmt->close();
 
-        $_SESSION['user'] = $signup_username;
+        $_SESSION['userid'] = 4;
 
     }
 
     //This if statement takes the user to the Dashboard if there was no error
     //and takes him back to the sign up page if there was one and prints the error for them
-    if ($error == "" && isset($_SESSION['user'])) {
-        header("Location: news.php");
+    if ($error == "" && isset($_SESSION['userid'])) {
+        header("Location: storyindex.php");
         exit;
     } else {
         $_SESSION['error_signup'] = $error;

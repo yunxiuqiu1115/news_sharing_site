@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'database.php';
 $yourid = $_SESSION["userid"];
 
 $title = $_POST["title"];
@@ -11,12 +12,6 @@ if(!hash_equals($_SESSION['token'], $_POST['token'])){
     die("Request forgery detected");
 }
 
-
-
-$conn = mysqli_connect("localhost","root","1047deqingsu","story");
-if ($conn->connect_error){
-    die("Connection failed:".$conn->connect_error);
-}
 
 $sql = "UPDATE story SET title='$title',link='$link',content='$content' where id='$storyid'";
 

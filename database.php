@@ -1,8 +1,8 @@
 <?php
-$mysqli = new mysqli('localhost', 'module3', 'module3', 'module3');
+$conn = new mysqli('localhost', 'module3', 'module3', 'module3');
 
-if($mysqli->connect_errno) {
-	printf("Connection Failed: %s\n", $mysqli->connect_error);
+if($conn->connect_errno) {
+	printf("Connection Failed: %s\n", $conn->connect_error);
 	exit;
 }
 ?>
