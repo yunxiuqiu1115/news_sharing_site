@@ -36,9 +36,8 @@ if($result->num_rows>0){
         
         echo "<tr><td>".$storyid."</td><td><a href='display.php?storyid=".$storyid."'>".$row["title"]."</a></td><td><a href='$external_link'>link</a></td>";
         if($row["id_of_creater"]==$yourid){
-        
-            echo"<td><a href='deletestory.php?storyid=".$row["id"]."'>Delete</a></td>";
-            echo"<td><a href='editstory.php?storyid=".$row["id"]."'>Edit</a></td>";
+            echo"<td><a href='deletestory.php?storyid=".$storyid."'>Delete</a></td>";
+            echo"<td><a href='editstory.php?storyid=".$storyid."'>Edit</a></td>";
         }
 
     

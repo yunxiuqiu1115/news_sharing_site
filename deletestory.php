@@ -5,7 +5,6 @@ $yourid = $_SESSION["userid"];
 
 $storyid = $_GET["storyid"];
 
-
 $sql = "DELETE FROM story where id='$storyid'";
 
 $result = $conn -> query($sql);
