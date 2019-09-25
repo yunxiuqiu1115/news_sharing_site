@@ -1,87 +1,72 @@
 <?php
     session_start();
     require 'database.php';
-    //initializing the variables
-    $signup_username = $password1 = $password2 = $error = $username = "";
 
-    //this if statement verifies that the new user entered their username, password and the verification of the password
-    if (isset($_POST['signup_username']) && isset($_POST['signup_password']) && isset($_POST['signup_password2'])) {
+    if (!empty($_POST['signup_username'])
+    && !empty($_POST['first_name'])
+    && !empty($_POST['last_name'])
+    && !empty($_POST['signup_password'])
+    && !empty($_POST['signup_password2'])) {
 
-
-        //the following block checks if the new username already exists in the usernames file
-        //the variable userexists_isnew is true if the username has not been used before
         $signup_username = htmlentities($_POST['signup_username']);
-        $username_isnew = true;
-        $stmt = $conn->prepare("select username from users");
-        if(!$stmt){
-            printf("Query Prep Failed: %s\n", $conn->error);
-            exit;
-        }
-
-        $stmt->execute();
-
-        $stmt->bind_result($username);
-        while($stmt->fetch()){
-            if (htmlspecialchars($username) == $signup_username) {
-                $username_isnew = false;
-                break;
-            }
-        }
-        $stmt->close();
-
-        //the following block checks if the password matches with its verification
-        //the variable passwords_are_equal is true if the passwords match
+        $firstname = htmlentities($_POST['first_name']);
+        $lastname = htmlentities($_POST['last_name']);
         $password1 = htmlentities($_POST['signup_password']);
         $password2 = htmlentities($_POST['signup_password2']);
-        $passwords_are_equal = false;
-        if ($password1 == $password2){
-            $passwords_are_equal = true;
-        }
-    }
 
-    //the following if statements record the type of error that happened to inform the user in case there was a mistake
-    //if there was no error, the else block register the new user in the usernames and passwords file
-    //and assigns the username and password to 2 session variables
-    if ($signup_username == "") {
-        $error = "You didn't enter your username.";
-    } elseif ($password1 == "") {
-        $error = "You didn't enter your password."; 
-    } elseif ($password2 == "") {
-        $error = "You didn't verify your password."; 
-    } elseif ($username_isnew == false) {
-        $error = "The username you entered already exists!";
-    } /*elseif (!preg_match('/^[\w_\-]+$/', $signup_username)) {
-        $error = "Invalid username! Don't use special characters.";
-    }*/ elseif ($passwords_are_equal == false) {
-        $error = "The passwords didn't match";
-    } else {
+        $stmt1 = $conn->prepare("SELECT COUNT(*) FROM users WHERE username=?");
 
-        $stmt = $conn->prepare("insert into users (username, password) values (?, ?)");
-        if(!$stmt){
-            printf("Query Prep Failed: %s\n", $conn->error);
+        $stmt1->bind_param('s', $signup_username);
+        $stmt1->execute();
+
+        $stmt1->bind_result($cnt);
+        $stmt1->fetch();
+        $stmt1->close();
+
+        if ($cnt == 1) {
+            
+            $_SESSION['error_signup'] = "The username you entered already exists!";
+            header("Location: index.php");
+            exit;
+
+        } elseif ($password1 != $password2){
+            
+            $_SESSION['error_signup'] = "The passwords you entered don't match!";
+            header("Location: index.php");
+            exit;
+
+        } else {
+
+            $stmt2 = $conn->prepare("insert into users (username, first_name, last_name, password) values (?, ?, ?, ?)");
+            if(!$stmt2) {
+                printf("Query Prep Failed: %s\n", $conn->error);
+                exit;
+            }
+
+            $password1 = password_hash($password1, PASSWORD_BCRYPT);
+
+            $stmt2->bind_param('ssss', $signup_username, $firstname, $lastname, $password1);
+            $stmt2->execute();
+            $stmt2->close();
+
+            $stmt3 = $conn->prepare("SELECT  id FROM users WHERE username=?");
+
+            $stmt3->bind_param('s', $signup_username);
+            $stmt3->execute();
+
+            $stmt3->bind_result($user_id);
+            $stmt3->fetch();
+
+            
+            $_SESSION['userid'] = $user_id;
+            header("Location: storyindex.php");
             exit;
         }
-
-        $password1 = password_hash($password1, PASSWORD_BCRYPT);
-
-        $stmt->bind_param('ss', $signup_username, $password1);
-
-        $stmt->execute();
-
-        $stmt->close();
-
-        $_SESSION['userid'] = 4;
-
-    }
-
-    //This if statement takes the user to the Dashboard if there was no error
-    //and takes him back to the sign up page if there was one and prints the error for them
-    if ($error == "" && isset($_SESSION['userid'])) {
-        header("Location: storyindex.php");
-        exit;
     } else {
-        $_SESSION['error_signup'] = $error;
+        
+        $_SESSION['error_signup'] = "All fields are required!";
         header("Location: index.php");
         exit;
+
     }
 ?>

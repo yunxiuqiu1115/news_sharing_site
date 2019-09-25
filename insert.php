@@ -13,7 +13,7 @@ $newlink = $_POST['newlink'];
 $newcontent = $_POST['newcontent'];
 
 
-$sql = "INSERT INTO story(id_of_creater,title,link,content) VALUES('2','$newtitle','$newlink','$newcontent')";
+$sql = "INSERT INTO story(id_of_creater,title,link,content) VALUES('$yourid','$newtitle','$newlink','$newcontent')";
 
 
 $result = $conn -> query($sql);

@@ -4,7 +4,7 @@
 
 
     //this if statement verifies that the user entered their username and password
-    if (isset($_POST['login_username']) && isset($_POST['login_password'])) {
+    if (!empty($_POST['login_username']) && !empty($_POST['login_password'])) {
 
         // Use a prepared statement
         $stmt = $conn->prepare("SELECT COUNT(*), id, password FROM users WHERE username=?");

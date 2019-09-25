@@ -1,0 +1,60 @@
+body{
+    overflow: auto;
+    width: 100%;
+    background-color: rgb(139, 213, 247);
+}
+
+.welcome {
+    padding: 5px;
+    border-radius: 25px;
+    background-color: rgb(76, 187, 238);
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center
+}
+
+.connect {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#signup, #login {
+    float: left;
+    background-color: rgb(76, 187, 238);
+    height: 480px;
+    margin: 5%;
+    padding: 5px;
+    text-align: center;
+    width: 36%;
+    border-radius: 25px;
+}
+
+.insert_story, .stories, .comments {
+    background-color: rgb(76, 187, 238);
+    
+    margin: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    text-align: center;
+    width: 60%;
+    border-radius: 25px;
+}
+
+.insert_story {
+    height: 480px;
+}
+
+
+input, textarea {
+    background-color: rgb(139, 213, 247);
+    color: black;
+    padding: 1%;
+    border-radius: 25px;
+}
+
+.error{
+    color: red;
+}
