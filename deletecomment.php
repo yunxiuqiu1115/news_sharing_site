@@ -6,7 +6,7 @@ $yourid = $_SESSION["userid"];
 
 $commentid = $_GET["commentid"];
 
-
+$sid2 = $_SESSION['sid'];
 
 
 
@@ -15,10 +15,5 @@ $sql = "DELETE FROM comment where id_of_comment='$commentid'";
 $result = $conn -> query($sql);
 $conn -> close();
 
-echo"Succesfully deleted!";
+header("Location: display.php?storyid=".$sid2);
 ?>
-
-<form action="storyindex.php" method="POST">
-        
-        <button type="submit" name="back">BACK</button>
-</form>

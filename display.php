@@ -50,7 +50,9 @@
         while($stmt2->fetch()){
             echo "<p><b>by ".$first." ".$last."</b> on ".$date."<br>".$comment;
         if($id == $yourid){
+            $_SESSION['sid'] = $sid;
             echo"<br><a href='deletecomment.php?commentid=".$cid."'>Delete</a>||<a href='editcomment.php?commentid=".$cid."'>Edit</a>";
+            
         }      
         echo "</p><hr>";
         }
@@ -59,28 +61,20 @@
     ?>
     <div class = "insert_story">
     <form action='insertcomment.php' method='post'>
-    content:<br>
-    <textarea name="comment" cols="50" rows="10" placeholder = "Please write your comment here!"></textarea> 
-    <br>
-    <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>" />
-    <input type = "hidden" name="stid" value='<?php echo "$sid";?>'/>
-    <input type="submit" value="post">
-    
+        <p>
+            <label for="comment">Comment:</label> <br>
+            <textarea id="comment" name="comment" cols="50" rows="10" placeholder="Please write your comment here!"></textarea> 
+        </p>
+        <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>" />
+        <input type = "hidden" name="stid" value='<?php echo "$sid";?>'/>
+        <p>
+            <input type="submit" value="Post">
+        </p>
     </form>
-    <br>
     
     </div>
     
     </div>
-
-
-    
-
-
-
-
-
-    
 
 </body>
 </html>

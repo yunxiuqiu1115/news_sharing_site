@@ -22,11 +22,5 @@
 
     $conn -> close();
 
-    echo"Successfully posted!";
-    ?>
-
-
-<form action="storyindex.php" method="POST">
-        
-        <button type="submit" name="goback">BACK</button>
-</form>
+    header("Location: display.php?storyid=".$sid2);
+?>

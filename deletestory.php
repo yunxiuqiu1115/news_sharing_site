@@ -10,10 +10,5 @@ $sql = "DELETE FROM story where id='$storyid'";
 $result = $conn -> query($sql);
 $conn -> close();
 
-echo"Succesfully deleted!";
+header("Location: storyindex.php");
 ?>
-
-<form action="storyindex.php" method="POST">
-        
-        <button type="submit" name="back">BACK</button>
-</form>

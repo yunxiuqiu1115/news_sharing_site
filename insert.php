@@ -21,13 +21,7 @@ $result = $conn -> query($sql);
 
 $conn -> close();
 
-echo"Successfully posted!"
 
-
+header("Location: storyindex.php");
 
 ?>
-
-<form action="storyindex.php" method="POST">
-        
-        <button type="submit" name="goback">BACK</button>
-</form>
