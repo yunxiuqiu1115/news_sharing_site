@@ -1,3 +1,4 @@
+<!-- This file displays the stry the user selectsed and gives the user the option to upload pictures and to add comments-->
 <?php
         session_start();
         require 'database.php';
@@ -40,6 +41,13 @@
         echo "</div>";
         echo '<div class="comments">';
         echo "<h2>Content</h2><p>".$content."</p><hr>";
+
+
+       
+
+
+
+
              
         $stmt2 = $conn->prepare("SELECT users.id, users.first_name as first, users.last_name as last, comment, id_of_comment, date_posted from comment join users on (userid = users.id) where id_of_story=?");
 
@@ -59,6 +67,109 @@
         $stmt2->close();
            
     ?>
+
+
+
+
+<!-- *************************This part is to show the images************************* -->
+<table border="1" width="1000" align="center">
+                        <tr>
+                        <td>Picture</td>
+
+                        </tr>
+                        <?php
+
+                                //change lines below to your require database.php blablabla
+                                require 'database.php';
+                                $sql = "SELECT * from pictures where storyid='$sid'";
+                                $result = $conn -> query($sql);
+
+
+
+                                if($result->num_rows>0){
+                                    while($row = $result -> fetch_assoc()){
+
+
+                                        $image = $row["paths"];
+
+                                        echo"<tr>";
+                                        echo "<td>";
+                                        echo"<img src='$image' width='300' height='100'>";
+                                        echo"</td>";
+
+                                        echo"</tr>";
+                                    }
+
+                                }
+
+                                $conn -> close();
+
+
+
+
+
+
+                        ?>
+
+    </table>
+<!-- *************************This part is to show the images************************* -->
+
+    <table border="1" width="500" align="center">
+    <tr>
+                        <th>Content</th>
+                        </tr>
+
+                        <?php
+                        require 'database.php';
+                        $sql = "SELECT content from story where id='$sid'";
+                        $result = $conn -> query($sql);
+
+
+
+                        if($result->num_rows>0){
+                            while($row = $result -> fetch_assoc()){
+
+                                echo "<tr>";
+
+
+
+                                echo"<td>".$row["content"]."</td>";
+
+                                echo"</tr>";
+                            }
+
+                        }
+
+                        $conn -> close();
+
+                        ?>
+    </table>
+<!-- *************************This part is to upload the images************************* -->
+<?php
+require 'database.php';
+
+$sql = "SELECT users.id as id from users,story where story.id='$sid'and users.id=story.id_of_creater";
+
+$result = $conn -> query($sql);
+
+
+
+if($result->num_rows>0){
+    while($row = $result -> fetch_assoc()){
+        if($row["id"]==$yourid) //remember to change "2" in this line to "$yourid"
+        {echo"<form action='upload.php' method='POST' enctype='multipart/form-data'>";
+         echo"<input type='file' name='file'>";
+         echo"<button type='submit' name='submit'>UPLOAD</button>";
+         echo"</form>";
+        }
+    }}
+    $conn -> close();
+
+?>
+
+
+
+
     <div class = "insert_story">
     <form action='insertcomment.php' method='post'>
         <p>

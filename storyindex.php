@@ -1,3 +1,4 @@
+<!-- This file displays all the stories and gives the user the possibility to delete, edit and logout -->
 <?php
     session_start();
     require 'database.php';

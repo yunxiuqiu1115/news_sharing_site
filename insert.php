@@ -1,4 +1,4 @@
-<!-- session of userid should be add here to substitute the values --> 
+<!-- This file gets the user inputs and creates a new story --> 
 <?php
 session_start();
 require 'database.php';
